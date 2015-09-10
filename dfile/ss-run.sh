@@ -11,6 +11,7 @@
 	do
 		/usr/bin/ss-server -s 0.0.0.0 -p 20000 -k ${PASSWD} -m aes-128-cfb -u --fast-open &
 		/usr/bin/ss-server -s 0.0.0.0 -p 20000 -k ${PASSWD} -m aes-128-cfb -u --fast-open &
+		sleep 120
 		while true
 		do 
 			if [ "$(date +%H%M)" == "0300" ]; then
