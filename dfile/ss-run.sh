@@ -2,24 +2,20 @@
 {
 	cron
 
-	PASSWD="darkflamemasterdarkflamedragon"
-	if [ "$1" != "" ]; then
-		PASSWD="$1"
-	fi
+	PASSWD="$1"
 
-	while true
-	do
-		/usr/bin/ss-server -s 0.0.0.0 -p 20000 -k ${PASSWD} -m aes-128-cfb -u --fast-open &
-		/usr/bin/ss-server -s 0.0.0.0 -p 20000 -k ${PASSWD} -m aes-128-cfb -u --fast-open &
-		sleep 120
-		while true
-		do 
-			if [ "$(date +%H%M)" == "0300" ]; then
-				break
-			fi
-			sleep 60
-		done
-		jobs -l | grep ss-server | awk '{print $2}' | xargs kill -9
-		fg
-	done
+	cd /root/gopath/bin/
+	echo "
+{
+    \"server\":\"127.0.0.1\",
+    \"server_port\":10000,
+    \"local_port\":20000,
+    \"password\":\"$PASSWD\",
+    \"method\": \"aes-256-cfb-auth\",
+    \"timeout\":600
+}
+" > config.json
+
+	./shadowsocks-server -d
+
 } >>/ss/ss.log 2>&1
